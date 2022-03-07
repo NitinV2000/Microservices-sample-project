@@ -12,7 +12,7 @@ public class ContactServiceImpl implements ContactService{
 	
 	List<Contact> list = List.of(
 			new Contact(1L,"nitu@gmail.com","Nitu","12345",1L),
-			new Contact(1L,"deepika@gmail.com","Deepika","32345",1L)
+			new Contact(2L,"deepika@gmail.com","Deepika","32345",1L)
 			);
 
 	@Override

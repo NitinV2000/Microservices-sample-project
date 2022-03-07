@@ -1,4 +1,4 @@
-package com.tintin.contact;
+package com.tintin.contact.controller;
 
 import java.util.List;
 
