@@ -1,22 +1,44 @@
-server:
-  port: 8999
-  
-eureka:
-  instance:
-    hostname: localhost
-    
 spring:
-  application:
-    name: Api-Gateway
   cloud:
     gateway:
       routes:
-      - id: user-service
-        uri: lb://user-service
-        predicates:
-        - Path = /user/**
-      - id: contact-service
-        uri: lb://contact-service
-        predicates:
-        - Path = /contact/**
-       
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/user/** #first letter must be a capital letter
+          filters:
+          - name: CircuitBreaker
+            args:
+              name: user-service
+              fallbackuri: forward:/userServiceFallback 
+        - id: contact-service
+          uri: lb://contact-service
+          predicates:
+            - Path=/contact/** #first letter must be a capital letter 
+          filters:
+          - name: CircuitBreaker
+            args:
+              name: contact-service
+              fallbackuri: forward:/contactServiceFallback 
+  application:
+    name: API-GATEWAY
+eureka:
+  instance:
+    hostname: localhost
+server:
+  port: 8999
+  
+hystrix:  
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - hystrix.stream    
